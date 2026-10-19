@@ -1,0 +1,59 @@
+{
+  "project": "RA3EP1-FPS-Unlock",
+  "display_name": "RA3EP1 FPS Unlock",
+  "version": "1.0.0",
+  "summary": "Portable fixed-rate timing payloads and loader for Command & Conquer Red Alert 3: Uprising (EP1 1.0).",
+  "language": "C11 (GNU extensions for the i686 bridges)",
+  "build": {
+    "system": "CMake >= 3.15, any generator; Ninja recommended",
+    "compilers": ["i686-w64-mingw32-gcc (MinGW-w64)", "i686-w64-mingw32-clang (LLVM-MinGW)"],
+    "toolchain_file": "cmake/i686-windows.cmake",
+    "stable_rates": [60, 120],
+    "research_only_rates": [30, 90],
+    "rate_switch": "-DRA3_TARGET_FPS=<rate> per payload target (single source tree)",
+    "outputs": ["fps60.dll", "fps120.dll", "RA3EP1FPSUnlock.exe"],
+    "release_zip": "RA3EP1-FPS-Unlock-<version>-windows-x86.zip",
+    "loader_alias": "Uprising60.exe (identical loader bytes, kept for existing dependency documentation)",
+    "host_tests": ["tests/contract_check.py", "tests/test_particle_clock.c", "tests/test_schedule120.c", "tests/test_sway_compat.c"],
+    "cross_test_note": "tests/test_sway_runtime.c is the actual i686 bridge fixture; it builds in every i686 Windows configuration and runs in-place only (success prints 'PASS' and exits 42; CTest gates on the PASS banner)."
+  },
+  "supported_game": {
+    "title": "Command & Conquer Red Alert 3: Uprising (EP1), version 1.0",
+    "executable": "ra3ep1_1.0.game",
+    "sha256": "19b3542a7d2f7a050b16b2ea5e4ba0231b13c3fb7fcdb2c3e89767d4d354430b",
+    "pe32_timedatestamp": "0x49a7778c",
+    "pe32_sizeof_image": "0x2791f38",
+    "image_base": "0x400000",
+    "compatibility_note": "The loader refuses any executable whose SHA-256 or PE identity does not match these values, and never writes the game executable."
+  },
+  "loader": {
+    "name": "RA3EP1FPSUnlock.exe",
+    "usage": "RA3EP1FPSUnlock.exe GAME_DIRECTORY DLL_PATH",
+    "behavior": "Verifies the game SHA-256, starts the game, then asks the game to LoadLibrary the payload DLL via a remote thread on LoadLibraryW."
+  },
+  "payload": {
+    "log_file": "uprising120.log (next to the loaded DLL)",
+    "env_switches": {
+      "U60_BASELINE": "Non-empty value keeps native 30 FPS timing and logs baseline-only measurements."
+    },
+    "rate_model": {
+      "logic_hz": 15,
+      "display_ratio": "fps / 15 (8 at 120, 6 at 90, 4 at 60, 2 at 30)",
+      "schedule_120": "cycle stage ends {1,2,3,3,4,5,5,6}; stages 3 and 5 re-display (hold); 90 native stage calls per 120 displays",
+      "schedule_60": "native 4:1 batching, cycle ends {2,3,5,6}, first-display threshold 6 -> 8",
+      "particles_hz": 30,
+      "suspension": "authored 30 Hz spring; display blend beta = i/N with one step of latency; external per-drawable cache",
+      "display_ms": "rational Bresenham clock, exactly 1000 ms per fps frames",
+      "gpu_particles": "keep authored 30 Hz lifetime units at every rate"
+    }
+  },
+  "evidence_scope": {
+    "runtime": "The i686 bridge fixture passed at -O2 for 60 and 120 (exit 42) in the owning project's Windows-on-Mac runtime harness; 90 FPS remains research-only with an unresolved in-motion landing discontinuity.",
+    "windows_native": "Windows-native execution is not asserted by this repository; CI compiles the same sources with MinGW-w64 and runs the host contract tests."
+  },
+  "license": "MIT (see LICENSE); original source; no game code, Wine code, or SAGE-Unlocked GPL source included.",
+  "diagnostics": {
+    "model_trace": "src/model_trace.h ships the bounded diagnostic journal; RA3_MODEL_TRACE defaults to 0 and the stable profile compiles it out entirely.",
+    "research_switches": ["RA3_TARGET_FPS=30", "RA3_TARGET_FPS=90", "RA3_DIAGNOSTIC_NATIVE_SWAY=1", "RA3_DIAGNOSTIC_UNIT_WINDOW=10 (90 only)"]
+  }
+}

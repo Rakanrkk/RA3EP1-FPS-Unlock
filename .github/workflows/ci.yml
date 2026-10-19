@@ -1,0 +1,48 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+jobs:
+  host-tests:
+    name: Host contract tests (30/60/90/120)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Independent multirate contract verifier
+        run: python3 tests/contract_check.py
+      - name: CMake host tests
+        run: |
+          cmake -S . -B build/host -DRA3EP1FPSUNLOCK_RATES=
+          cmake --build build/host
+          ctest --test-dir build/host --output-on-failure
+
+  windows-i686:
+    name: Windows i686 build (MinGW-w64 cross)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends gcc-mingw-w64-i686 ninja-build
+      - name: Configure
+        run: >
+          cmake -S . -B build/i686 -G Ninja
+          -DCMAKE_TOOLCHAIN_FILE=cmake/i686-windows.cmake
+          -DRA3EP1FPSUNLOCK_CROSS_PREFIX=i686-w64-mingw32-
+          -DBUILD_TESTING=OFF
+      - name: Build payloads and loader
+        run: cmake --build build/i686
+      - name: Package deterministic release zip
+        run: >
+          python3 tools/release.py --build-dir build/i686
+          --output dist/RA3EP1-FPS-Unlock-${{ github.ref_name }}-windows-x86.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-i686
+          path: dist/*.zip
+          if-no-files-found: error
