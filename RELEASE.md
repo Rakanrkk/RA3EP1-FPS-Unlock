@@ -13,8 +13,7 @@ Command & Conquer: Red Alert 3 – Uprising (`ra3ep1_1.0.game`).
 - Particles keep the authored 30 Hz simulation; suspension physics keeps the
   authored 30 Hz cadence while the display interpolates poses at the chosen
   rate. Effect time domains are corrected per rate.
-- All changes are runtime-only: save layout, replay data and native physics
-  state are untouched, so existing saves and replays keep working.
+- All changes are runtime-only: save and replay formats are unchanged.
 - One source tree builds one DLL per rate, and each release archive carries a
   `SHA256SUMS` file.
 
@@ -74,8 +73,7 @@ RA3EP1 FPS Unlock 1.0.0 是《命令与征服：红色警戒 3：起义时刻》
   30 和 90 保留为同一源码树的研究档位。任何选项都不会改变游戏速度。
 - 粒子保持原版 30 Hz 模拟；悬挂物理保持原版 30 Hz 节奏，画面按所选频率插值
   姿态。特效时间域按档位修正。
-- 全部修改仅作用于运行时代码：存档布局、录像数据和原生物理状态不变，现有
-  存档和录像继续可用。
+- 全部修改仅作用于运行时代码：存档与录像格式不变。
 - 一份源码为每档构建一个 DLL，发行归档附 `SHA256SUMS`。
 
 ### 当前状态
