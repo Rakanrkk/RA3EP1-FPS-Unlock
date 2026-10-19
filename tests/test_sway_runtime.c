@@ -49,7 +49,7 @@ __attribute__((naked)) static void fake_rejoin(void) {
 }
 /* Native output blocks have ESI=drawable; the full path has EAX=state.
  * Keep x87 and another SSE register live across the real recording bridge. */
-__attribute__((naked)) static void call_output_bridge(void *self, void *state, uintptr_t bridge) {
+__attribute__((naked)) static void call_output_bridge(void *self __attribute__((unused)), void *state __attribute__((unused)), uintptr_t bridge __attribute__((unused))) {
     __asm__ __volatile__(
         "pushl %esi\n\tmovl 8(%esp),%esi\n\tmovl 12(%esp),%eax\n\t"
         "fldpi\n\tmovups _vector_seed,%xmm1\n\tcall *16(%esp)\n\t"
@@ -89,11 +89,11 @@ __attribute__((naked)) static void fake_epilogue(void) {
 __attribute__((naked)) static void fake_destroy_tail(void) {
     __asm__ __volatile__("setnz _deletion_requested\n\tmovl %ecx,%eax\n\tret $4\n\t");
 }
-__attribute__((naked)) static void *call_entry_bridge(void *self) {
+__attribute__((naked)) static void *call_entry_bridge(void *self __attribute__((unused))) {
     __asm__ __volatile__(
         "pushl %edi\n\tmovl 8(%esp),%edi\n\tcall _sway_entry_bridge\n\tpopl %edi\n\tret\n\t");
 }
-__attribute__((naked)) static void call_cache(void *self, float *pose) {
+__attribute__((naked)) static void call_cache(void *self __attribute__((unused)), float *pose __attribute__((unused))) {
     __asm__ __volatile__(
         "pushl %ebx\n\tpushl %esi\n\tpushl %edi\n\tpushl %ebp\n\t"
         "movl 0x14(%esp),%edi\n\tmovl 0x18(%esp),%edx\n\t"

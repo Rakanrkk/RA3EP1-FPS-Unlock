@@ -1,0 +1,53 @@
+name: "Bug report / 问题报告"
+description: "Something in the app or a payload does not work as expected / 应用或补丁行为不符合预期"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: "请一个场景一份报告，并只附上已清理隐私信息的日志。One scenario per report, please; attach only privacy-cleaned logs."
+  - type: dropdown
+    id: component
+    attributes:
+      label: "Component / 组件"
+      options:
+        - "App / launcher (RA3EP1Mac) / 应用与启动器"
+        - "Timing payload / 游戏时序补丁"
+        - "Build tools / 构建工具"
+        - "Other / 其他"
+    validations:
+      required: true
+  - type: dropdown
+    id: rate
+    attributes:
+      label: "Frame rate / 帧率档位"
+      options:
+        - "60 FPS"
+        - "120 FPS"
+        - "Not rate-related / 与帧率无关"
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: "What happened / 发生了什么"
+      description: "Expected vs. actual behavior / 预期行为与实际行为"
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Steps to reproduce / 复现步骤"
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: "Environment / 环境"
+      description: "Release version, Mac chip, macOS version, display layout / 版本、芯片、系统、显示器布局"
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Logs / 日志"
+      description: "Optional. Privacy-cleaned excerpts only / 可选，仅限已清理隐私信息的摘录"

@@ -24,7 +24,7 @@
     "pe32_timedatestamp": "0x49a7778c",
     "pe32_sizeof_image": "0x2791f38",
     "image_base": "0x400000",
-    "compatibility_note": "The loader refuses any executable whose SHA-256 or PE identity does not match these values, and never writes the game executable."
+    "compatibility_note": "The loader refuses to start the game when the executable's SHA-256 does not match this value, and never writes the game executable."
   },
   "loader": {
     "name": "RA3EP1FPSUnlock.exe",

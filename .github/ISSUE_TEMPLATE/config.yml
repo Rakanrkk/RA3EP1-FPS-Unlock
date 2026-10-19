@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: "Discussions / 讨论区"
+    url: https://github.com/Rakanrkk/RA3EP1-FPS-Unlock/discussions
+    about: "Questions, ideas and session results / 提问、想法与实测结果分享"
+  - name: "RA3EP1Mac app issues / RA3EP1Mac 应用问题"
+    url: https://github.com/Rakanrkk/RA3EP1Mac/issues
+    about: "App, launcher and packaging problems / 应用、启动器与打包问题"

@@ -279,7 +279,7 @@ __attribute__((naked,used)) static void sway_a_full_bridge(void) {
         SWAY_RESTORE_CONTEXT
         "movss 0x1c(%eax),%xmm0\n\tjmp *_sway_a_full_continue\n\t");
 }
-__attribute__((naked,used,thiscall)) static void *sway_destroy_bridge(void *state, unsigned flags) {
+__attribute__((naked,used,thiscall)) static void *sway_destroy_bridge(void *state __attribute__((unused)), unsigned flags __attribute__((unused))) {
     __asm__ __volatile__(SWAY_SAVE_CONTEXT
         "movl %ecx,(%esp)\n\tcall _sway_forget_state\n\t"
         SWAY_RESTORE_CONTEXT

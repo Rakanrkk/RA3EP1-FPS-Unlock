@@ -1,0 +1,47 @@
+name: "Timing research feedback / 时序研究反馈"
+description: "In-game observation for the timing patches at a given rate / 某帧率档位下的游戏内观察"
+labels: ["timing-research"]
+body:
+  - type: markdown
+    attributes:
+      value: "Observations from real games drive this project's priorities. 一次观察一份报告；如果同一载荷在不同场景表现不同，请分开提交。"
+  - type: dropdown
+    id: rate
+    attributes:
+      label: "Frame rate / 帧率档位"
+      options:
+        - "30 FPS"
+        - "60 FPS"
+        - "90 FPS"
+        - "120 FPS"
+        - "Multiple / 多档对比"
+    validations:
+      required: true
+  - type: dropdown
+    id: payload
+    attributes:
+      label: "Payload source / 载荷来源"
+      options:
+        - "RA3EP1Mac release (Standalone/Runtime) / RA3EP1Mac 发行包"
+        - "Self-built from RA3EP1 FPS Unlock / 自行构建"
+    validations:
+      required: true
+  - type: textarea
+    id: scenario
+    attributes:
+      label: "Scenario / 场景"
+      description: "Unit, state, and when it happens (e.g. Jet Tengu landing while moving) / 单位、状态与发生时机"
+    validations:
+      required: true
+  - type: textarea
+    id: observation
+    attributes:
+      label: "Observation / 观察"
+      description: "What you saw vs. what the original game does / 所见现象与原版行为的差别"
+    validations:
+      required: true
+  - type: textarea
+    id: extra
+    attributes:
+      label: "Build / version info / 版本信息"
+      description: "Release version or build-result.json SHA-256; optional privacy-cleaned logs / 发行版本或构建 SHA-256；可选已清理日志"
